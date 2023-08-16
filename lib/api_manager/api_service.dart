@@ -132,7 +132,8 @@ class APIService {
   final innerHeader = {
     'Content-Type': 'application/json',
   };
-  var baseUrl = '';
+
+  var baseUrl = 'live.qareeb-maas.com';
 
   APIService._internal();
 
