@@ -348,12 +348,12 @@ class APIService {
 }
 
 void logRequest(String url, Map<String, dynamic>? q, {String? additional}) {
-  if (url.contains('api.php')) return;
+  if (url.contains('ExecuteRequest')) return;
   loggerObject.i('$url \n ${jsonEncode(q)}${additional == null ? '' : '\n$additional'}');
 }
 
 void logResponse(String url, http.Response response) {
-  if (url.contains('api.php')) return;
+  if (url.contains('ExecuteRequest')) return;
   var r = [];
   var res = '';
   if (response.body.length > 800) {
