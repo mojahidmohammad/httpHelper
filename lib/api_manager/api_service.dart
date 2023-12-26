@@ -73,7 +73,7 @@ extension DateUtcHelper on DateTime {
   }
 }
 
-var loggerObject = Logger(
+var _loggerObject = Logger(
   printer: PrettyPrinter(
     methodCount: 0,
     // number of method calls to be displayed
@@ -238,6 +238,37 @@ class APIService {
     return response;
   }
 
+  Future<http.Response> patchApi({
+    required String url,
+    Map<String, dynamic>? body,
+    Map<String, dynamic>? query,
+    Map<String, String>? header,
+    String? hostName,
+  }) async {
+    if (body != null) body.removeWhere((key, value) => value == null);
+
+    if (query != null) {
+      query.removeWhere((key, value) => value == null);
+      query.forEach((key, value) => query[key] = value.toString());
+    }
+
+    innerHeader.addAll(header ?? {});
+
+    final uri = Uri.https(hostName ?? baseUrl, url, query);
+
+    logRequest(url, (body ?? {})..addAll(query ?? {}));
+
+    final response =
+        await http.patch(uri, body: jsonEncode(body), headers: innerHeader).timeout(
+              const Duration(seconds: 400),
+              onTimeout: () => http.Response('connectionTimeOut', 481),
+            );
+
+    logResponse(url, response);
+
+    return response;
+  }
+
   Future<http.Response> puttApi({
     required String url,
     Map<String, dynamic>? body,
@@ -299,6 +330,8 @@ class APIService {
     return response;
   }
 
+
+
   Future<http.Response> uploadMultiPart({
     required String url,
     String? path,
@@ -349,7 +382,7 @@ class APIService {
 
 void logRequest(String url, Map<String, dynamic>? q, {String? additional}) {
   if (url.contains('ExecuteRequest')) return;
-  loggerObject.i('$url \n ${jsonEncode(q)}${additional == null ? '' : '\n$additional'}');
+  _loggerObject.i('$url \n ${jsonEncode(q)}${additional == null ? '' : '\n$additional'}');
 }
 
 void logResponse(String url, http.Response response) {
@@ -365,7 +398,7 @@ void logResponse(String url, http.Response response) {
     res = response.body;
   }
 
-  loggerObject.v('${response.statusCode} \n $res');
+  _loggerObject.v('${response.statusCode} \n $res');
 }
 
 // extension on String {
