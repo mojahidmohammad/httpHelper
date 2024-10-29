@@ -14,7 +14,7 @@ dependencies:
 
   http: ^1.2.2
   logger: ^1.1.0
-  intl: ^0.18.0
+  intl: ^0.18.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -24,7 +24,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
-flutter:
+#flutter:
 
 # To add assets to your package, add an assets section, like this:
 # assets:
